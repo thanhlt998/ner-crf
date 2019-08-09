@@ -19,16 +19,22 @@ def fill(text, width):
 
 
 def print_result(sentences, tags):
+    max_words_per_line = 15
     for sentence, tag in zip(sentences, tags):
         formated_sentence = []
         formated_tag = []
         for (token,), tag_ in zip(sentence, tag):
-            max_len = max(len(token), len(tag_))
+            max_len = max(len(token), len(tag_)) + 4
             formated_sentence.append(fill(token, max_len))
             formated_tag.append(fill(tag_, max_len))
 
-        print(' '.join(formated_sentence))
-        print(' '.join(formated_tag))
+        no_lines = len(formated_sentence) // max_words_per_line + (
+            0 if len(formated_sentence) % max_words_per_line == 0 else 1)
+
+        for i in range(no_lines):
+            print(' '.join(formated_sentence[max_words_per_line * i: max_words_per_line * (i + 1)]))
+            print(' '.join(formated_tag[max_words_per_line * i: max_words_per_line * (i + 1)]))
+            print('\n')
 
 
 if __name__ == '__main__':
@@ -42,4 +48,3 @@ if __name__ == '__main__':
             sentences = get_sentences(paragraph)
             tags = model.predict(sentences)
             print_result(sentences, tags)
-
