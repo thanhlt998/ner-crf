@@ -254,5 +254,6 @@ def get_features(sentence, is_using_pos_chunk):
 def get_sentences(paragraph):
     tokenized_sentences = [ViTokenizer.tokenize(sentence) for sentence in
                            re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.?!])\s+', paragraph)]
-    sentences = [[(token,) for token in sentence.split()] for sentence in tokenized_sentences]
+    sentences = [[(token,) for token in re.sub(r'(?<=\d\s[/-])\s|(?=\s[/-]\s\d)\s', '', sentence).split()] for sentence
+                 in tokenized_sentences]
     return sentences
